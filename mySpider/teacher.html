@@ -1,0 +1,286 @@
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>WebplusPro 搜索</title>
+        <link rel="stylesheet" type="text/css" href="../../_css/sudy-edit.css" />
+        <link rel="stylesheet" type="text/css"  href="../../_js/themes/default/easyui.css" />
+        <link rel="stylesheet" type="text/css" href="../../_js/themes/icon.css" />
+        <script type="text/javascript" src="../../_js/jquery.min.js"></script>
+        <script type="text/javascript" src="../../_js/jquery.easyui.min.js"></script>
+        <script type="text/javascript" src="../../_js/jquery.query.js"></script>
+        <script type="text/javascript" src="../../_js/easyui-lang-zh_CN.js"></script>
+        <script type="text/javascript" src="../../_js/common.js"></script>
+        <script type="text/javascript" src="../../_js/jquery.base64.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        
+        <link rel="stylesheet" type="text/css" href="/_upload/tpl/00/6f/111/template111/css/custom/wp_search.css" >
+        
+    </head>
+    <body>
+        
+	    <link type="text/css" href="/_upload/site/1/search/css/search.css" rel="stylesheet" />
+        <div id="wp_search" class="wp_search">
+            <div id="search_head" class="search_head">
+                <div class="head_top">
+				<div class="search_logo" id="search_logo"> 
+				 <img src="/_upload/site/00/04/4/logo.png" style="width:242px;height: 100px;"/> 
+				</div>
+                    <div class="search_tool">
+					    
+                        <div class="search_tabs">
+                            <a href='#' onclick='doSearchByType("1");' class='tab_item selected_item'>网页</a>
+<a href='#' onclick='doSearchByType("2");' class='tab_item'>图片</a>
+<a href='#' onclick='doSearchByType("3");' class='tab_item'>附件</a>
+<input type="hidden" id="searchType" name="searchType" value="1">
+<script>
+$(function() {
+$(".result_tab_item").on("click", function() {
+$(this).addClass('result_selected_item').siblings().removeClass('result_selected_item');
+});
+$(".tab_item").on("click", function() {
+$(this).addClass('selected_item').siblings().removeClass('selected_item');
+});
+$('#searchType').val('1');var $searchType = $("#searchType").val();
+if ($searchType == '2') {
+$(".tab_item").eq(1).addClass('selected_item').siblings().removeClass('selected_item');
+}
+if ($searchType == "3") {
+$(".tab_item").eq(2).addClass('selected_item').siblings().removeClass('selected_item');
+}
+ $(".search_switch,.close_switch,.search_advanced").on("click", function() {
+ $(".search_switch").toggleClass('close_switch');
+$(".search_filters").slideToggle(200, function() {
+if ($(this).is(':hidden')) {
+ $(".search_switch").attr("title", function() {
+return "展开";
+});
+ } else {
+$(".search_switch").attr("title", function() {
+return "收缩";
+ });
+}
+});
+});
+});
+function doSearchByType(type){
+$('#searchType').val(type);
+doSearch(0);
+}
+function doSearchByrecommed(type){
+$('#recommend').val(type);
+doSearch(-1);
+}
+function relateBaidu() {
+var type = $("#searchType").val();
+var inputword = document.getElementById("keyword").value;
+var url = "https://www.baidu.com/s?wd=";
+if (type === '2') {
+ url = "http://image.baidu.com/search/index?tn=baiduimage&cl=2&word=";
+}
+ url += inputword;
+window.open(url);
+}
+</script>      
+                        </div>
+                        <div class="search_input input_keyword">
+                            <input class="search_keyword" type="text" autocomplete="off" maxlength="100" id="keyword" name="keyword" value="">
+
+                        </div>
+                        <div class="search_input input_submit">
+                            <input class="search_submit" onclick="doSearch(0);" type="button"  value="搜索一下">
+<input type="hidden" id="returnInfos" name="returnInfos" value="${returnInfos}">
+<input type="hidden" id="group" name="group" value="0">
+<input type="hidden" id="recommend" name="recommend" value="1">
+<script>
+ $(document).ready(function() {
+$('#keyword').val('');
+$('#searchs_4').val('');
+$('#searchs_5').val('');
+$('#searchs_6').datebox('setValue','');
+$('#searchs_7').datebox('setValue','');
+$('#searchs_9').val('');
+ });
+function doSearchByPageIndex(pageIndex){
+var group=$('#group').val();
+searchAjax(pageIndex,group);
+}
+function doSearch(group){
+$('#group').val(group);
+searchAjax(1,group);
+}
+function searchAjax(pageIndex,group){
+var searchInfos = [];
+searchInfos.push({field: 'pageIndex', value: pageIndex});
+searchInfos.push({field: 'group', value: group});
+var type=$('#searchType').val();
+ searchInfos.push({field: 'searchType', value: type});
+var keyword=$('#keyword').val();
+searchInfos.push({field: 'keyword', value: keyword});
+var recommend=$('#recommend').val();
+searchInfos.push({field: 'recommend', value: recommend});
+var str_4=$('#searchs_4').val();
+searchInfos.push({field: 4, value: str_4});
+var str_5=$('#searchs_5').val();
+searchInfos.push({field: 5, value: str_5});
+var str_6=$('#searchs_6').datebox('getValue');
+searchInfos.push({field: 6, value: str_6});
+var str_7=$('#searchs_7').datebox('getValue');
+searchInfos.push({field: 7, value: str_7});
+var str_8=$('#searchs_8').val();
+searchInfos.push({field: 8, value: str_8});
+var str_9=$('#searchs_9').val();
+searchInfos.push({field: 9, value: str_9});
+var str_10=$('#searchs_10').val();
+searchInfos.push({field: 10, value: str_10});
+var infos = $.base64.encode(JSON.stringify(searchInfos), 'UTF-8');
+$.ajax({
+url:'packageCons.do?_p=YXM9NCZ0PTExMSZkPTQzMSZwPTEmbT1TTiY_'+'&tt='+Math.random(),
+type: 'POST',
+ contentType: "application/x-www-form-urlencoded; charset=utf-8",
+async: false,
+dataType: 'json',
+data: {searchInfo:infos},
+success: function(result) {
+if(group>0){
+ $(".result_search_tabs").hide();
+}else{
+if(result.linkSiteId==0){
+$(".result_search_tabs").hide();
+}else{
+$(".result_search_tabs").show();
+}
+}
+ $(".results_classfiy").html(result.groupData);
+ $(".results_list").html(result.data);
+ var HtmlUtil = {
+ htmlDecode: function(str) {
+var s = "";
+if (str.length == 0){return '';}
+s = str.replace(/&amp;/g, "&");
+s = s.replace(/&lt;/g, "<");
+s = s.replace(/&gt;/g, ">");
+s = s.replace(/&nbsp;/g, " ");
+s = s.replace(/&#39;/g, "\'");
+s = s.replace(/&quot;/g, "\"");
+return s;}
+}
+var html='<span class="items_num">'+'为您找到相关结果约'+result.total+'个'+'</span>';
+var pages = HtmlUtil.htmlDecode(result.pages);
+html=pages+html;
+var feedback='<div class="search_footer"><a class="wp_feedback" href="javascript:;">用户反馈</a></div>';
+var feediframe='<div class="wp_feedback_list_dialog"  style="top: 730px; left: 689px;" data-id=""><div class="wp_feedback_iframetitle"><a hreft="javascript:;">X</a></div><div class="wp_feedback_iframeinner">';
+feediframe+='<input type="hidden" name="feedFrameValue" value="/_web/search/feedbackAdd.jsp?_p=YXM9NCZ0PTExMSZkPTQzMSZwPTEmbT1TTiY_"/>';
+feediframe+='<iframe id="feedframe" name="feedframe" src="" style="width: 100%; height: 100%;" scrolling="no" frameborder="0"></iframe>';
+feediframe+='</div></div>';
+html=html+feedback+feediframe;
+$(".search_pages").html(html);
+}
+});
+}
+</script>
+
+                        </div>
+						 <a href="javascript:;" class="search_input search_advanced">高级搜索</a>
+<span id="openRelatedBaidu" style="display: none;"><a href="javascript:;" class="search_input search_advanced" target="_black" onclick="relateBaidu();">关联百度</a></span>
+
+						
+                    </div>
+                </div>
+            </div>
+            <div id="search_middle" class="search_middle">
+                <div class="search_filters">
+                    <ul class="filters_list filters_text clearfix">
+                          <li class="filter_item"><label>创建者</label> <input type="text" id="searchs_4" name="filter_writer" class="sudy-input" value="" maxlength="30">
+</li> <li class="filter_item"><label>作者</label> <input type="text" id="searchs_5" name="filter_writer" class="sudy-input" value="" maxlength="30">
+</li> <li class="filter_item"><label>开始时间</label> <input type="text" id="searchs_6"  class="easyui-datebox" value=""  editable="false" >
+</li> <li class="filter_item"><label>结束时间</label> <input type="text" id="searchs_7"  class="easyui-datebox" value=""  editable="false" >
+</li> <li class="filter_item"><label>分类</label> <input type="text" id="catalogTree" class="easyui-combotree" editable="false">
+<input type="hidden" id="searchs_8" name="searchs_8" value="">
+<script>
+$().ready(function() {
+$('#catalogTree').combotree({
+ url: 'loadCategoryTree.do?_p=YXM9NCZ0PTExMSZkPTQzMSZwPTEmbT1TTiY_',
+ checkbox: true,
+cascadeCheck: true,
+multiple: true,
+animate: true,
+ onCheck: function(node) {
+var catalogs = [];
+var trees = $('#catalogTree').combotree('tree');
+var nodes = trees.tree('getChecked');
+if (nodes[0].id === 0) {
+$('#searchs_8').val("0");return""; }
+ for (var i = 0; i < nodes.length; i++) {  catalogs.push(nodes[i].id); }
+ if (catalogs !== null) {$('#searchs_8').val(catalogs.join(","));}
+},
+onLoadSuccess: function() {
+ $('#catalogTree').combotree("setValue", "0");
+}
+ });
+ });
+</script>
+</li> <li class="filter_item"><label>出处</label> <input type="text" id="searchs_9" name="filter_writer" class="sudy-input" value="" maxlength="30">
+</li> <li class="filter_item"><label>栏目树</label> <input type="text" id="columnTree" class="easyui-combotree" editable="false">
+<input type="hidden" id="searchs_10" name="searchs_10" value="">
+<script>
+$().ready(function() {
+ $('#columnTree').combotree({
+ url: 'loadColumnTree.do?_p=YXM9NCZ0PTExMSZkPTQzMSZwPTEmbT1TTiY_',
+ checkbox: false,
+cascadeCheck: false,
+editable: false,
+width: 164,
+panelHeight: 200,onSelect: function(node) {
+$('#searchs_10').val(node.id);
+},
+ onLoadSuccess: function() {
+}
+ });
+ });
+</script>
+</li>
+                    </ul>
+					<div class="filters_list filters_btn"><a class="filter_btn filters_reset" href="javascript:;" onclick="reset();">重置</a></div>
+<script>
+function reset(){
+$('#searchs_4').val('');
+$('#searchs_5').val('');
+$('#searchs_6').datebox('setValue', '');
+$('#searchs_7').datebox('setValue', '');
+$('#catalogTree').combotree("setValue", "0");
+$('#searchs_8').val('');
+$('#searchs_9').val('');
+$('#columnTree').combotree("setValue", "");
+$('#searchs_10').val('');
+}
+</script>
+
+                </div>
+				<a class="search_switch" href="javascript:;" ></a>
+
+            </div>
+            <div id="search_body" class="search_body">
+                <div class="search_results">
+                    <div class="results_list">
+                            
+                    </div>
+                </div>
+				<div class="search_pages">
+                    
+                </div>
+            </div>
+        </div>
+    
+    </body>
+</html>
+
