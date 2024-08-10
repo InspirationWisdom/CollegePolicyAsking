@@ -21,8 +21,8 @@ doc = {
 }
 
 #创建索引
-# resp = client.index(index="test-index", id=1, body=doc)
-# print(resp['result'])
+resp = client.index(index="test-index", id=1, body=doc)
+print(resp['result'])
 
 #获取文档
 resp = client.get(index="test-index", id=1)

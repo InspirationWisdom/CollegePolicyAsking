@@ -1,10 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import utils
-import json
 
 from Elasticsearch import search as Es_search
-import Spyder.spyderLink as Spyder
 import LLM.GML as GML
 
 app = Flask(__name__)
@@ -20,7 +17,6 @@ CORS(app, supports_credentials=True)
 def ChatAI():
     # 获取POST请求中的数据
     question = request.args.get('question')
-    question_url = utils.get_url(question)
 
     '''
     功能：如果提供链接，对提供的链接进行总结
