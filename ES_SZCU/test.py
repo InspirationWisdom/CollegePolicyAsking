@@ -28,6 +28,7 @@ if question_url is not None:
             #只截取2040个字符进行总结
             text = text[:2040]
             summary = GML.GML_summary(text)
+            print(summary)
             #对json格式的summer 的Data的 message,添加链接
             summary['Data']['message']['link'] = question_url
             print(summary)
