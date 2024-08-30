@@ -31,7 +31,7 @@ def GML_answer(text, question=''):
 
 
 #返回适用于Elasticsearch的搜索的分词结果
-def GML_search(text):
+def GML_question_to_keywords(text):
     payload = {"input": {"messages": [{"content": "提取问题关键词，只返回关键词：" + text, "role": "user"}]},
                "parameters": {"do_sample": True, "max_length": 2048}}
     response = post_request(API_URL, json=payload)
