@@ -79,5 +79,5 @@ def get_total(index, query):
     resp = client.count(index=index, body=request_body)
     return resp['count']
 
-print(search_text('notices', '贫困补助'))
-print(get_total('notices', '贫困补助'))
+# print(search_text('notices', '贫困补助'))
+# print(get_total('notices', '贫困补助'))

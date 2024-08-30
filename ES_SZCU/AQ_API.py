@@ -24,8 +24,6 @@ def ChatAI():
     question = question[:2030]
     question_keywords = GML.GML_question_to_keywords(question)
 
-    #获取提取结果
-    question_keywords = question_keywords['Data']['message']['content']
     #如果extraQuestion中有字符“关键词”，去除
     if "关键词" in question_keywords:
         question_keywords = question_keywords.replace("关键词", "")
@@ -49,17 +47,17 @@ def ChatAI():
         #如果搜索结果为空，调用GML模型，对问题进行回答
         answer = GML.GML_answer(question)
         #将三者数据整合为一个json格式的数据，返回
-        return jsonify({'result': result}, {'pagenum': page_num}, {'answer': answer})
+        return jsonify({'answer': answer})
     else:
         print("搜索结果不为空")
         #如果不为空，获取查询的第一条数据，进行总结
         text = result[0]['text']
+        release_time = result[0]['time'][:10][0:4]
+        print("time:", release_time)
         if len(text) > 2030:
             text = text[:2030]
             summary = GML.GML_answer(text, question)
-            #添加是第几条数据
-            summary['Data']['message']['num'] = 1
-            return jsonify({'result': result}, {'pagenum': page_num}, {'summary': summary})
+            return jsonify({'summary': "截止于" + release_time + "年，" + summary})
         elif text == "nan":
             #for循环遍历，直到找到不为空的text，或者所有text都为空
             for i in range(1, len(result)):
@@ -67,25 +65,16 @@ def ChatAI():
                 if text != "nan":
                     #找到不为空的text，进行总结
                     summary = GML.GML_answer(text, question)
-                    #添加标记，判断是搜索Elasticsearch还是爬取网页
-                    summary['Data']['message']['is_search'] = True
-                    #添加是第几条数据
-                    summary['Data']['message']['num'] = i + 1
-                    return jsonify({'result': result}, {'pagenum': page_num}, {'summary': summary})
+                    release_time = result[i]['time'][:10][0:4]
+                    return jsonify({'summary': "截止于" + release_time + "年，" + summary})
 
             #如果所有text都为空，content:抱歉，没有找到相关内容
             summary = {'Data': {'message': {'content': '抱歉，没有找到相关内容'}}}
-            #添加标记，判断是搜索Elasticsearch还是爬取网页
-            summary['Data']['message']['is_search'] = True
-            #添加是第几条数据
-            summary['Data']['message']['num'] = 1
-            return jsonify({'result': result}, {'pagenum': page_num}, {'summary': summary})
+            return jsonify({'summary': summary})
         else:
             #找到不为空的text，进行总结
             summary = GML.GML_answer(text, question)
-            #添加是第几条数据
-            summary['Data']['message']['num'] = 1
-            return jsonify({'result': result}, {'pagenum': page_num}, {'summary': summary})
+            return jsonify({'summary': "截止于" + release_time + "年，" + summary})
 
 '''
 功能：将查询到的结果整合为json格式
