@@ -24,7 +24,7 @@ def search_text(index, query, start=0):
             },
             "sort": [
                 {
-                    "notice_time": "desc"
+                    # "notice_time": "desc"
                 }
             ],
             "size": 10,  # 返回前10条数据
@@ -40,7 +40,7 @@ def search_text(index, query, start=0):
             },
             "sort": [
                 {"_score": {"order": "desc"}},
-                {"notice_time": {"order": "desc"}}
+                # {"notice_time": {"order": "desc"}}
             ],
             "size": 10,  # 返回前10条数据
             "from": start

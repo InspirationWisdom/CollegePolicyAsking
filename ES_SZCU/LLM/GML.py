@@ -23,7 +23,7 @@ def GML_summary(text):
 
 #返回回答问题的文本
 def GML_answer(text, question=''):
-    response = model.generate_content("结合问题和文本回答。问题:" + question + "文本:" + text)
+    response = model.generate_content("结合问题和文本回答，并将回答控制在100字以内。问题:" + question + "文本:" + text)
     return response.text
 
 
