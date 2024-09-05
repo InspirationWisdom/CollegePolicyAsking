@@ -2,7 +2,7 @@ import requests
 import google.generativeai as genai
 import os
 
-genai.configure(api_key="Don't you want to know?")
+genai.configure(api_key="AIzaSyCRI94P56T3fMGFcUPqi_xubtXJkmHR0U4")
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # def post_request(url, json):
