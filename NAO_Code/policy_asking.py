@@ -5,7 +5,7 @@ import requests
 import time
 import json
 
-robot_ip = '169.254.223.59'  # replace with your robot's IP address
+robot_ip = ''  # replace with your robot's IP address
 port = 9559
 
 audio_recorder = ALProxy("ALAudioRecorder", robot_ip, port)
