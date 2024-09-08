@@ -3,9 +3,8 @@
 from naoqi import ALProxy
 import requests
 import time
-import json
 
-robot_ip = ''  # replace with your robot's IP address
+robot_ip = '172.20.10.3'  # replace with your robot's IP address
 port = 9559
 
 audio_recorder = ALProxy("ALAudioRecorder", robot_ip, port)
